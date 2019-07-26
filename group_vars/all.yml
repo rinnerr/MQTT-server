@@ -4,9 +4,9 @@ bind_address:
   "{{ hostvars[inventory_hostname]['ansible_' + bind_interface]['ipv4']['address'] }}"
 
 user_name: ansible
-path_home: /home/thehung/ansible-galaxy/MQTT-server
+path_home: /home/ansible/automation/MQTT-server
 path_home_server: /home/ansible
-path_to_packages: /home/thehung/ansible-galaxy/packages
+path_to_packages: /home/ansible/automation/packages
 
 #mqtt
 ip_mqtt_broker: "{{ bind_address }}"
@@ -46,4 +46,4 @@ mongodb_exporter_version: 0.7.1
 mongodb_exporter_dir: /tmp/mongodb_exporter
 
 
-elasticsearch_server: 192.168.2.33
+elasticsearch_server: 42.118.242.146

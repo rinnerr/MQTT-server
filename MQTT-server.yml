@@ -1,7 +1,7 @@
 ---
 
 - name: install mqtt_broker
-  hosts: mqtt-server
+  hosts: memcached-server
   remote_user: '{{ user_name }}'
   become: true
 
