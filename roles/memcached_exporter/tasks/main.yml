@@ -1,0 +1,49 @@
+---
+# tasks file for memcached_exporter
+- name: Ensure directories exists
+  file:
+    path: "/tmp/memcached_exporter"
+    state: directory
+    owner: memcached
+    group: memcached
+    mode: "0750"
+
+- name: download memcached_exporter
+  get_url:
+    url: https://github.com/prometheus/memcached_exporter/releases/download/v{{ memcached_exporter_version }}/memcached_exporter-{{ memcached_exporter_version }}.linux-amd64.tar.gz
+    dest: "/tmp/memcached_exporter"  
+    owner: memcached
+    group: memcached
+    mode: "0664"
+
+- name: unarchive file memcached_exporter-{{ memcached_exporter_version }}.linux-amd64.tar.gz
+  unarchive:
+    src: "/tmp/memcached_exporter/memcached_exporter-{{ memcached_exporter_version }}.linux-amd64.tar.gz"
+    dest: "/tmp/memcached_exporter"
+    owner: memcached
+    group: memcached
+    remote_src: yes
+
+- name: create service memcached_exporter
+  template:
+    src: "{{ path_home }}/roles/memcached_exporter/templates/memcached_exporter.service.j2"
+    dest: "/etc/systemd/system/memcached_exporter.service"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: enable and start service
+  systemd:
+    daemon_reload: yes
+    name: memcached_exporter
+    state: started
+    enabled: yes
+
+- name: open port firewalld memcached_exporter
+  firewalld:
+    port: 9150/tcp
+    permanent: yes
+    state: enabled
+    
+- name: restart firewalld
+  service: name=firewalld state=restarted

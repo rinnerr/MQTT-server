@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+[Unit]
+Description={{ openio_memcached_namespace }}-{{ openio_memcached_servicename }} daemon from OpenIO
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=memcached
+Group=memcached
+ExecStart=/usr/bin/memcached -m {{ openio_memcached_cachesize_MBytes }} -p {{ openio_memcached_bind_port }} -u openio -l {{ openio_memcached_bind_address }} -c {{ openio_memcached_maxconn }} -U 0
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

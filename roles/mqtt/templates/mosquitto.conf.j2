@@ -1,0 +1,19 @@
+user mosquitto
+
+pid_file /var/run/mosquitto/mosquitto.pid
+
+persistence true
+persistence_file mosquitto.db
+persistence_location /var/mosquitto/
+
+listener 2883
+protocol mqtt
+
+listener 1883
+protocol mqtt
+acl_file /etc/mosquitto/acl.conf
+connection mqtt-broker-test
+address {{ ip_mqtt_broker }}:2883
+topic alochym/# out 0
+
+bridge_protocol_version mqttv311

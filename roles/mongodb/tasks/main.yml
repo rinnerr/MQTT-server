@@ -1,0 +1,21 @@
+---
+# tasks file for mongodb
+- name: create mongodb-org.repo 
+  template: 
+    src: "{{ path_home }}/roles/mongodb/templates/mongodb-org-4.0.repo.j2"
+    dest: "/etc/yum.repos.d/mongodb-org-4.0.repo"
+    owner: root 
+    group: root 
+    mode: "0644"
+
+- name: "Include RedHat tasks"
+  include_tasks: RedHat.yml
+
+- name: start mongodb
+  service:
+    name: mongod
+    state: started
+    enabled: yes
+
+
+

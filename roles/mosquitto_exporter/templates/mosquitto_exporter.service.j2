@@ -1,0 +1,13 @@
+[Unit]
+Description=Mqtt Blackbox Exporter
+
+[Service]
+User=mqtt-exporter
+Group=mqtt-exporter
+Restart=on-failure
+Type=simple
+ExecStart=/root/go/bin/mosquitto-exporter --endpoint tcp://{{ ip_mqtt_broker }}:1883 --user {{ user_mqtt_publish }}
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

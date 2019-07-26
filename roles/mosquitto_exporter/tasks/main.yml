@@ -1,0 +1,55 @@
+---
+# tasks file for mqtt_exporter
+- name: create the MQTT exporter group
+  group:
+    name: "{{ mosquitto_exporter_group }}"
+    gid: "{{ mosquitto_exporter_gid }}"
+    state: present
+    system: yes  
+
+- name: create the MQTT exporter user
+  user:
+    name: "{{ mosquitto_exporter_user }}"
+    uid: "{{ mosquitto_exporter_uid }}"
+    group: "{{ mosquitto_exporter_group }}"
+    append: yes
+    shell: /usr/sbin/nologin
+    system: yes
+    createhome: no
+
+- name: install epel-release
+  yum:
+    name: epel-release.noarch
+    state: latest
+
+- name: install golang
+  yum:
+    name: golang
+    state: latest
+
+- name: get mosquitto_exporter from github
+  command: go get -u github.com/sapcc/mosquitto-exporter
+  
+- name: create mosquitto_exporter.service in /etc/systemd/system/
+  template:
+    src: "{{ path_home }}/roles/mosquitto_exporter/templates/mosquitto_exporter.service.j2"
+    dest: "/etc/systemd/system/mosquitto_exporter.service"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: enable and start service
+  systemd:
+    daemon_reload: yes
+    name: mosquitto_exporter
+    state: started
+    enabled: yes
+
+- name: open port firewalld for mosquitto-exporter
+  firewalld:
+    port: 9234/tcp
+    permanent: yes
+    state: enabled
+
+- name: restart firewalld
+  service: name=firewalld state=restarted

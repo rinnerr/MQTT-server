@@ -1,0 +1,49 @@
+---
+# tasks file for mongodb_exporter
+- name: Ensure directories exists
+  file:
+    path: "/tmp/mongodb_exporter"
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: download mongodb_exporter
+  get_url:
+    url: https://github.com/percona/mongodb_exporter/releases/download/v{{ mongodb_exporter_version }}/mongodb_exporter-{{ mongodb_exporter_version }}.linux-amd64.tar.gz
+    dest: "/tmp/mongodb_exporter"  
+    owner: root
+    group: root
+    mode: "0664"
+
+- name: unarchive file mongodb_exporter-{{ mongodb_exporter_version }}.linux-amd64.tar.gz
+  unarchive:
+    src: "/tmp/mongodb_exporter/mongodb_exporter-{{ mongodb_exporter_version }}.linux-amd64.tar.gz"
+    dest: "/tmp/mongodb_exporter"
+    owner: root
+    group: root
+    remote_src: yes
+
+- name: create service mongodb_exporter
+  template:
+    src: "{{ path_home }}/roles/mongodb_exporter/templates/mongodb_exporter.service.j2"
+    dest: "/etc/systemd/system/mongodb_exporter.service"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: enable and start service
+  systemd:
+    daemon_reload: yes
+    name: mongodb_exporter
+    state: started
+    enabled: yes
+
+- name: open port firewalld mongodb_exporter
+  firewalld:
+    port: 9216/tcp
+    permanent: yes
+    state: enabled
+    
+- name: restart firewalld
+  service: name=firewalld state=restarted

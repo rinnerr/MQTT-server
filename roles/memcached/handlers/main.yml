@@ -1,0 +1,5 @@
+# roles/memcached/handlers/main.yml
+---
+- name: "restart {{openio_memcached_namespace}}-memcached-{{openio_memcached_serviceid}}"
+  command: "gridinit_cmd restart {{openio_memcached_namespace}}-memcached-{{openio_memcached_serviceid}}"
+...

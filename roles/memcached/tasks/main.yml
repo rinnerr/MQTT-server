@@ -1,0 +1,30 @@
+# roles/ansible-role-memcached/tasks/main.yml
+---
+- name: "Include RedHat tasks"
+  include_tasks: RedHat.yml
+    
+# - name: Ensure directories exists
+#   file:
+#     path: "{{ memcached_log }}"
+#     state: directory
+#     owner: memcached
+#     group: memcached
+#     mode: "0750"
+
+# - name: Generate configuration files
+#   template:
+#     src: memcached.RedHat.conf.j2
+#     dest: "/etc/sysconfig/memcached"
+#     owner: memcached
+#     group: memcached
+#     mode: 0644
+#   register: _memcached_conf
+
+- name: restart memcached
+  systemd:
+    daemon_reload: yes
+    name: memcached
+    state: restarted
+    enabled: yes
+#  when: _memcached_conf.changed
+...

@@ -1,0 +1,49 @@
+---
+bind_interface: "{{ ansible_default_ipv4.alias }}"
+bind_address:
+  "{{ hostvars[inventory_hostname]['ansible_' + bind_interface]['ipv4']['address'] }}"
+
+user_name: ansible
+path_home: /home/thehung/ansible-galaxy/MQTT-server
+path_home_server: /home/ansible
+path_to_packages: /home/thehung/ansible-galaxy/packages
+
+#mqtt
+ip_mqtt_broker: "{{ bind_address }}"
+user_mqtt_publish: test
+
+#mqtt-exporter
+mosquitto_exporter_group: mqtt-exporter
+mosquitto_exporter_gid: 1001
+mosquitto_exporter_user: mqtt-exporter
+mosquitto_exporter_uid: 1001
+
+#memcached-exporter
+memcached_exporter_version: 0.5.0
+memcached_exporter_dir: /tmp/memcached_exporter/memcached_exporter-{{ memcached_exporter_version }}.linux-amd64
+
+#memcached
+memcached_bind_address: "{{ bind_address }}"
+memcached_port: 11211
+memcached_maxconn: 1024
+memcached_cachesize_MBytes: 64
+memcached_log: /var/log/memcached
+
+memcached_user: memcached
+
+memcached_packages:
+  - memcached-1.4.15-10.el7_3.1.x86_64
+  - memcached-devel-1.4.15-10.el7_3.1.x86_64
+  #- memcached-1.5.6-1.el7.x86_64
+  - libmemcached.x86_64
+  - libmemcached-devel-1.0.16-5.el7.x86_64
+
+mongodb_packages:
+  - mongodb-org-4.0.10-1.el7.x86_64
+mongodb_port: 27017
+#mongodb_exporter
+mongodb_exporter_version: 0.7.1
+mongodb_exporter_dir: /tmp/mongodb_exporter
+
+
+elasticsearch_server: 192.168.2.33
