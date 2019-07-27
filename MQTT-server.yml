@@ -1,7 +1,7 @@
 ---
 
 - name: install mqtt_broker
-  hosts: memcached-server
+  hosts: notificate-server
   remote_user: '{{ user_name }}'
   become: true
 
@@ -28,9 +28,9 @@
     - install-java
     - rpm-import
     - filebeat
-    # - mongodb
+    - mongodb
     # - mqtt
-    # - memcached
+    - memcached
     # - mosquitto_exporter
     - memcached_exporter
-    # - mongodb_exporter
+    - mongodb_exporter

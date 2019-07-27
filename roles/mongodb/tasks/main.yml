@@ -11,6 +11,14 @@
 - name: "Include RedHat tasks"
   include_tasks: RedHat.yml
 
+- name: config for mongodb
+  template:
+    src: "{{ path_home }}/roles/mongodb/templates/mongod.conf.j2"
+    dest: "/etc/mongod.conf"
+    owner: root
+    group: root
+    mode: "0644"
+
 - name: start mongodb
   service:
     name: mongod
