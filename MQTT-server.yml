@@ -28,9 +28,9 @@
     - install-java
     - rpm-import
     - filebeat
-    - mongodb
+    #- mongodb
     # - mqtt
-    - memcached
+    #- memcached
     # - mosquitto_exporter
-    - memcached_exporter
-    - mongodb_exporter
+    #- memcached_exporter
+    #- mongodb_exporter
