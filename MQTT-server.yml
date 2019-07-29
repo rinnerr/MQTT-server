@@ -1,7 +1,7 @@
 ---
 
 - name: install mqtt_broker
-  hosts: notificate-server
+  hosts: ftp-srs
   remote_user: '{{ user_name }}'
   become: true
 
