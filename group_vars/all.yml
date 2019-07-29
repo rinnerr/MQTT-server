@@ -46,4 +46,4 @@ mongodb_exporter_version: 0.7.1
 mongodb_exporter_dir: /tmp/mongodb_exporter
 
 
-elasticsearch_server: 42.118.242.146
+logstash_server: 42.118.242.146
